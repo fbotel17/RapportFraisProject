@@ -1,0 +1,6 @@
+easy_admin:
+    entities:
+        - App\Entity\Chauffeur
+        - App\Entity\TypeFrais
+        - App\Entity\Frais
+        - App\Entity\FraisDetail

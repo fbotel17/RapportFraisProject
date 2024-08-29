@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter des Frais{% endblock %}
+
+{% block body %}
+<h1>Ajouter des Frais</h1>
+
+{{ form_start(form) }}
+<div class="form-group">
+    {{ form_label(form.date) }}
+    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.lieu) }}
+    {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.petit_dejeuner) }}
+    {{ form_widget(form.petit_dejeuner) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.repas_midi) }}
+    {{ form_widget(form.repas_midi) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.repas_soir) }}
+    {{ form_widget(form.repas_soir) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.nuit) }}
+    {{ form_widget(form.nuit) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.dimanche) }}
+    {{ form_widget(form.dimanche) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.heureVolantTime) }}
+    {{ form_widget(form.heureVolantTime, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_label(form.heuresTotalesTime) }}
+    {{ form_widget(form.heuresTotalesTime, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="form-group">
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+</div>
+{{ form_end(form) }}
+{% endblock %}
