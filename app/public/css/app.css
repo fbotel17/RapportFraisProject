@@ -19,3 +19,37 @@
     background-color: #0056b3;
     border-color: #004085;
 }
+
+.form-label {
+    background-color: #ffffff; /* Fond blanc */
+    padding: 5px; /* Espacement autour du texte */
+    border-radius: 4px; /* Coins arrondis pour un meilleur aspect */
+    display: block; /* Assure que le fond blanc prend toute la largeur du label */
+    margin-bottom: 5px; /* Espacement sous le label */
+}
+
+.test {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block; /* Adapte la largeur à son contenu */
+    margin-bottom: 10px; /* Espace en bas pour chaque champ */
+}
+
+.form-group {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    margin-top: 20px;
+}
+
+.checkbox-wrapper {
+    display: inline-block; /* Laisser la largeur s'ajuster au contenu */
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+

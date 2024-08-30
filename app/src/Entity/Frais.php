@@ -125,9 +125,12 @@ class Frais
         $this->heureVolantTime = $heureVolantTime;
 
         if ($heureVolantTime !== null) {
+            // Extraire les heures et les minutes de l'objet DateTimeInterface
             $hours = (int) $heureVolantTime->format('G');
             $minutes = (int) $heureVolantTime->format('i');
-            $this->heure_volant = $hours + ($minutes / 60);
+
+            // Convertir les heures en minutes et ajouter les minutes extraites
+            $this->heure_volant = ($hours * 60) + $minutes;
         }
 
         return $this;
@@ -143,13 +146,17 @@ class Frais
         $this->heuresTotalesTime = $heuresTotalesTime;
 
         if ($heuresTotalesTime !== null) {
+            // Extraire les heures et les minutes de l'objet DateTimeInterface
             $hours = (int) $heuresTotalesTime->format('G');
             $minutes = (int) $heuresTotalesTime->format('i');
-            $this->heures_totales = $hours + ($minutes / 60);
+
+            // Convertir les heures en minutes et ajouter les minutes extraites
+            $this->heures_totales = ($hours * 60) + $minutes;
         }
 
         return $this;
     }
+
 
 
     
