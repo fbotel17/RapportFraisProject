@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des données{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/historique.css') }}">
+    <style>
+        /* Styles pour la photo de fond sur mobile */
+        @media (max-width: 768px) {
+            body {
+                background-image: url('{{ asset('images/camion.JPG') }}');
+                background-size: cover;
+                background-position: left;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <!-- Formulaire pour sélectionner le mois -->
+        <form id="month-form" method="get" action="{{ path('historique') }}">
+            <div class="mb-3">
+                <label for="month" class="form-label">Sélectionner un mois</label>
+                <select id="month" name="month" class="form-select" aria-label="Sélectionner un mois">
+                    {% for month in months %}
+                        <option value="{{ month.month }}" {% if month.month == selectedMonth %}selected{% endif %}>
+                            {{ month.month | date('F Y') }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        <!-- Affichage des frais -->
+        <table class="table table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Lieu</th>
+                    <th>Heure Volant</th>
+                    <th>Heures Totales</th>
+                    <th>Total Frais</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for frais in fraisList %}
+                    <tr>
+                        <td>{{ frais.date | date('d/m/Y') }}</td>
+                        <td>{{ frais.lieu }}</td>
+                        <td>{{ frais.heure_volant }}</td>
+                        <td>{{ frais.heures_totales }}</td>
+                        <td>{{ frais.total_frais | number_format(2, '.', ',') }} €</td>
+                        <td>
+                            <a href="{{ path('historique_detail', { id: frais.id }) }}" class="btn btn-info btn-sm">Voir</a>
+                            <form action="{{ path('historique_delete', { id: frais.id }) }}" method="post" style="display:inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ frais.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('month').addEventListener('change', function() {
+            document.getElementById('month-form').submit();
+        });
+    </script>
+{% endblock %}

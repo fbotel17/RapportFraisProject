@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier les données{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Modifier les données du {{ frais.date|date('d M Y') }}</h1>
+
+{{ form_start(form) }}
+<div class="row mb-3">
+    <div class="col-md-6">
+        {{ form_label(form.date) }}
+        {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-4">
+        <div class="checkbox-wrapper">
+            {{ form_widget(form.petit_dejeuner) }} {{ form_label(form.petit_dejeuner) }}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="checkbox-wrapper">
+            {{ form_widget(form.repas_midi) }} {{ form_label(form.repas_midi) }}
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="checkbox-wrapper">
+            {{ form_widget(form.repas_soir) }} {{ form_label(form.repas_soir) }}
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="checkbox-wrapper">
+            {{ form_widget(form.nuit) }} {{ form_label(form.nuit) }}
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="checkbox-wrapper">
+            {{ form_widget(form.dimanche) }} {{ form_label(form.dimanche) }}
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        {{ form_label(form.lieu) }}
+        {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        {{ form_label(form.heureVolantTime) }}
+        {{ form_widget(form.heureVolantTime, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-6">
+        {{ form_label(form.heuresTotalesTime) }}
+        {{ form_widget(form.heuresTotalesTime, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+
+{{ form_end(form) }}
+
+<a href="{{ path('historique') }}" class="btn mt-4 btn-secondary">Retour</a>
+{% endblock %}

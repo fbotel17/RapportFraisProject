@@ -4,13 +4,12 @@ namespace App\Form;
 
 use App\Entity\Frais;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class FraisType extends AbstractType
 {
@@ -19,35 +18,31 @@ class FraisType extends AbstractType
         $builder
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date'
+                'required' => true,
             ])
-            ->add('lieu', TextType::class, [
-                'label' => 'Lieu'
-            ])
+            ->add('lieu')
             ->add('heureVolantTime', TimeType::class, [
                 'widget' => 'single_text',
+                'required' => true,
+                'input'  => 'datetime',
                 'label' => 'Heures de conduite',
-                'attr' => ['class' => 'form-control'],
             ])
             ->add('heuresTotalesTime', TimeType::class, [
                 'widget' => 'single_text',
+                'required' => true,
+                'input'  => 'datetime',
                 'label' => 'Heures totales',
-                'attr' => ['class' => 'form-control'],
             ])
             ->add('petit_dejeuner', CheckboxType::class, [
-                'label' => 'Petit déjeuner',
                 'required' => false,
             ])
             ->add('repas_midi', CheckboxType::class, [
-                'label' => 'Repas du midi',
                 'required' => false,
             ])
             ->add('repas_soir', CheckboxType::class, [
-                'label' => 'Repas du soir',
                 'required' => false,
             ])
             ->add('nuit', CheckboxType::class, [
-                'label' => 'Nuit',
                 'required' => false,
             ])
             ->add('dimanche', CheckboxType::class, [
@@ -55,8 +50,8 @@ class FraisType extends AbstractType
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer',
-                'attr' => ['class' => 'btn btn-primary']
+                'label' => 'Enregistrer les modifications',
+                'attr' => ['class' => 'btn btn-primary'],
             ])
         ;
     }

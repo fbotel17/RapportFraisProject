@@ -50,7 +50,7 @@ class FraisController extends AbstractController
 
             $this->addFlash('success', 'Frais ajoutés avec succès !');
 
-            return $this->redirectToRoute('ajouter_frais');
+            return $this->redirectToRoute('statistiques');
         }
 
         return $this->render('frais/ajouter.html.twig', [

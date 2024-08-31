@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques du mois{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Statistiques du mois</h1>
+
+<div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">Résumé du mois</h4>
+    <p>Total des frais: {{ totalFrais }} €</p>
+    <p>Total des heures: {{ totalHeures }} heures</p>
+</div>
+{% endblock %}
