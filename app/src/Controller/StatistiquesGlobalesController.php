@@ -22,7 +22,7 @@ class StatistiquesGlobalesController extends AbstractController
 
             if (!isset($statistiques[$monthYearKey])) {
                 $statistiques[$monthYearKey] = [
-                    'date' => $date,  // Ajoutez la date ici
+                    'date' => $date,  
                     'petit_dejeuner' => 0,
                     'nuit' => 0,
                     'dimanche' => 0,
@@ -33,13 +33,25 @@ class StatistiquesGlobalesController extends AbstractController
                     'total_frais' => 0,
                 ];
             }
-
+            
+            if ($frais->getPetitDejeuner()) {
+                $statistiques[$monthYearKey]['petit_dejeuner'] += 1;
+            }
+            
             if ($frais->getRepasMidi()) {
                 $statistiques[$monthYearKey]['repas_midi'] += 1;
             }
 
             if ($frais->getRepasSoir()) {
                 $statistiques[$monthYearKey]['repas_soir'] += 1;
+            }
+
+            if ($frais->getNuit()) {
+                $statistiques[$monthYearKey]['nuit'] += 1;
+            }
+
+            if ($frais->getDimanche()) {
+                $statistiques[$monthYearKey]['dimanche'] += 1;
             }
 
             $statistiques[$monthYearKey]['total_heures_volant'] += $frais->getHeureVolant();
