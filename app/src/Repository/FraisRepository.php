@@ -73,6 +73,52 @@ class FraisRepository extends ServiceEntityRepository
         ]);
     }
 
+    public function getMonthlyStatistics(): array
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->select('
+                EXTRACT(MONTH FROM f.date) AS month, 
+                COUNT(CASE WHEN f.petit_dejeuner = true THEN 1 END) AS petit_dejeuner,
+                COUNT(CASE WHEN f.repas_midi = true THEN 1 END) AS repas_midi,
+                COUNT(CASE WHEN f.repas_soir = true THEN 1 END) AS repas_soir,
+                COUNT(CASE WHEN f.nuit = true THEN 1 END) AS nuit,
+                COUNT(CASE WHEN f.dimanche = true THEN 1 END) AS dimanche,
+                COUNT(CASE WHEN f.total_frais = true THEN 1 END) AS total_frais
+            ')
+            ->groupBy('month')
+            ->orderBy('month', 'ASC')
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    public function getAllFrais(): array
+    {
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findFraisBySearchTerm($searchTerm)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT * FROM frais f
+            WHERE
+                DATE_FORMAT(f.date, "%Y-%m") LIKE :searchTerm OR
+                f.heure_volant >= :searchTerm OR
+                f.heures_totales >= :searchTerm OR
+                f.total_frais >= :searchTerm
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['searchTerm' => '%'.$searchTerm.'%']);
+
+        return $stmt->fetchAllAssociative();
+    }
+
 
     
 }

@@ -1,0 +1,89 @@
+{# templates/statistiques_globales/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques Mensuelles{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Statistiques Mensuelles</h1>
+
+{# Définir les mois en français #}
+{% set months_fr = {
+    'January': 'Janvier',
+    'February': 'Février',
+    'March': 'Mars',
+    'April': 'Avril',
+    'May': 'Mai',
+    'June': 'Juin',
+    'July': 'Juillet',
+    'August': 'Août',
+    'September': 'Septembre',
+    'October': 'Octobre',
+    'November': 'Novembre',
+    'December': 'Décembre'
+} %}
+
+<!-- Barre de recherche -->
+<div class="mb-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un mois..." onkeyup="filterTable()">
+</div>
+
+<table class="table table-striped" id="statsTable">
+    <thead>
+        <tr>
+            <th>Mois</th>
+            <th>Petit Déjeuner</th>
+            <th>Repas Midi</th>
+            <th>Repas Soir</th>
+            <th>Nuit</th>
+            <th>Dimanche</th>
+            <th>Total Heures Volant</th>
+            <th>Total Heures Totales</th>
+            <th>Total Prix du Mois</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for monthYearKey, stat in statistiques %}
+            {# Extraire le mois et l'année #}
+            {% set date = stat.date %}
+            {% set month = date|date('F') %}
+            {% set year = date|date('Y') %}
+            {% set month_fr = months_fr[month] %}
+            {% set formatted_date = month_fr ~ ' ' ~ year %}
+
+            <tr>
+                <td>{{ formatted_date }}</td>
+                <td>{{ stat.petit_dejeuner }}</td>
+                <td>{{ stat.repas_midi }}</td>
+                <td>{{ stat.repas_soir }}</td>
+                <td>{{ stat.nuit }}</td>
+                <td>{{ stat.dimanche }}</td>
+                <td>{{ stat.total_heures_volant // 60 }}h {{ stat.total_heures_volant % 60 }}m</td>
+                <td>{{ stat.total_heures_totales // 60 }}h {{ stat.total_heures_totales % 60 }}m</td>
+                <td>{{ stat.total_frais }}€</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('statistiques') }}" class="btn mt-4 btn-secondary">Retour</a>
+
+{# Ajouter un script JavaScript pour le filtrage #}
+<script>
+    function filterTable() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const table = document.getElementById('statsTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) { // Commencer à 1 pour éviter l'en-tête
+            const cells = rows[i].getElementsByTagName('td');
+            const monthCell = cells[0].textContent.toLowerCase();
+            if (monthCell.indexOf(input) > -1) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+{% endblock %}

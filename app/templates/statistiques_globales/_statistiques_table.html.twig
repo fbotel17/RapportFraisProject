@@ -1,0 +1,39 @@
+{# templates/statistiques_globales/_statistiques_table.html.twig #}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Mois</th>
+            <th>Petit Déjeuner</th>
+            <th>Repas Midi</th>
+            <th>Repas Soir</th>
+            <th>Nuit</th>
+            <th>Dimanche</th>
+            <th>Total Heures Volant</th>
+            <th>Total Heures Totales</th>
+            <th>Total Prix du Mois</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for month, stat in statistiques %}
+            {# Extraire le mois et l'année #}
+            {% set date = stat.date %}
+            {% set month = date|date('F') %}
+            {% set year = date|date('Y') %}
+            {% set month_fr = months_fr[month] %}
+            {% set formatted_date = month_fr ~ ' ' ~ year %}
+
+            <tr>
+                <td>{{ formatted_date }}</td>
+                <td>{{ stat.petit_dejeuner }}</td>
+                <td>{{ stat.repas_midi }}</td>
+                <td>{{ stat.repas_soir }}</td>
+                <td>{{ stat.nuit }}</td>
+                <td>{{ stat.dimanche }}</td>
+                <td>{{ stat.total_heures_volant // 60 }}h {{ stat.total_heures_volant % 60 }}m</td>
+                <td>{{ stat.total_heures_totales // 60 }}h {{ stat.total_heures_totales % 60 }}m</td>
+                <td>{{ stat.total_frais }}€</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
