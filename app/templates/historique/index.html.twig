@@ -27,6 +27,28 @@
 </head>
 <body>
     
+    <!-- Modal de confirmation de suppression -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Êtes-vous sûr de vouloir supprimer cet élément ?
+        </div>
+        <div class="modal-footer">
+            <form id="deleteForm" method="post">
+            <input type="hidden" name="_token" id="csrfToken">
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+
 
     <div class="container mt-4">
         <!-- Formulaire pour sélectionner le mois -->
@@ -65,10 +87,9 @@
                         <td>{{ frais.total_frais | number_format(2, '.', ',') }} €</td>
                         <td>
                             <a href="{{ path('historique_detail', { id: frais.id }) }}" class="btn btn-info btn-sm">Voir</a>
-                            <form action="{{ path('historique_delete', { id: frais.id }) }}" method="post" style="display:inline;">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ frais.id) }}">
-                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm btn-delete" data-url="{{ path('historique_delete', { id: frais.id }) }}" data-token="{{ csrf_token('delete' ~ frais.id) }}">
+                                Supprimer
+                            </button>
                         </td>
                     </tr>
                 {% endfor %}
@@ -82,6 +103,28 @@
             document.getElementById('month-form').submit();
         });
     </script>
+
+    <script>
+        // Fonction pour ouvrir le modal et définir le formulaire de suppression
+        function showDeleteModal(event, url, token) {
+            event.preventDefault();
+            var form = document.getElementById('deleteForm');
+            form.action = url;
+            document.getElementById('csrfToken').value = token;
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+
+        // Ajoute des gestionnaires d'événements aux boutons de suppression
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function(event) {
+                var url = this.dataset.url;
+                var token = this.dataset.token;
+                showDeleteModal(event, url, token);
+            });
+        });
+    </script>
+
 </body>
 </html>
 

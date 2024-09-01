@@ -78,19 +78,22 @@ class FraisRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('f')
             ->select('
                 EXTRACT(MONTH FROM f.date) AS month, 
+                EXTRACT(YEAR FROM f.date) AS year,
                 COUNT(CASE WHEN f.petit_dejeuner = true THEN 1 END) AS petit_dejeuner,
                 COUNT(CASE WHEN f.repas_midi = true THEN 1 END) AS repas_midi,
                 COUNT(CASE WHEN f.repas_soir = true THEN 1 END) AS repas_soir,
                 COUNT(CASE WHEN f.nuit = true THEN 1 END) AS nuit,
                 COUNT(CASE WHEN f.dimanche = true THEN 1 END) AS dimanche,
-                COUNT(CASE WHEN f.total_frais = true THEN 1 END) AS total_frais
+                SUM(f.total_frais) AS total_frais
             ')
-            ->groupBy('month')
-            ->orderBy('month', 'ASC')
+            ->groupBy('year, month')
+            ->orderBy('year', 'DESC')
+            ->addOrderBy('month', 'DESC')  // Ajoutez cette ligne pour inverser l'ordre des mois
             ->getQuery();
 
         return $qb->getResult();
     }
+
 
     public function getAllFrais(): array
     {

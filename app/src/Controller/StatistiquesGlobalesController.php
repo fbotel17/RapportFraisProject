@@ -60,10 +60,14 @@ class StatistiquesGlobalesController extends AbstractController
             $statistiques[$monthYearKey]['total_frais'] += $frais->getTotalFrais();
         }
 
+        // Trier les mois dans l'ordre décroissant
+        krsort($statistiques);
+
         return $this->render('statistiques_globales/index.html.twig', [
             'statistiques' => $statistiques,
         ]);
     }
+
 
     #[Route('/statistiques/globales/filter', name: 'app_statistiques_filter', methods: ['POST'])]
     public function filter(Request $request, FraisRepository $fraisRepository): Response
@@ -71,10 +75,14 @@ class StatistiquesGlobalesController extends AbstractController
         $searchTerm = $request->request->get('searchTerm');
         $statistiques = $this->getStatistiques($fraisRepository, $searchTerm);
 
+        // Trier les mois dans l'ordre décroissant
+        krsort($statistiques);
+
         return $this->render('statistiques_globales/index.html.twig', [
             'statistiques' => $statistiques,
         ]);
     }
+
 
     private function getStatistiques(FraisRepository $fraisRepository, $searchTerm = null)
     {

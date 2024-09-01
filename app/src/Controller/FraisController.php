@@ -40,7 +40,10 @@ class FraisController extends AbstractController
                 $totalFrais += 15.96; // Valeur du repas soir
             }
             if ($frais->getNuit()) {
-                $totalFrais += 35.05; // Valeur de la nuitée
+                $totalFrais += 35.06; // Valeur de la nuitée
+            }
+            if ($frais->getDimanche()) {
+                $totalFrais += 35.06; // Valeur de la nuitée
             }
 
             $frais->setTotalFrais($totalFrais);

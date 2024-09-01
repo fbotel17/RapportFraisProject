@@ -17,6 +17,9 @@ class StatistiqueController extends AbstractController
         $dateDebutMois = new DateTime('first day of this month');
         $dateFinMois = new DateTime('last day of this month');
 
+        $dateDebutMois->setTime(0, 0, 0);  // Début du mois à minuit
+        $dateFinMois->setTime(23, 59, 59); // Fin du mois à 23h59m59s
+
         // Récupérer les frais du mois courant
         $frais = $fraisRepository->findByDateRange($dateDebutMois, $dateFinMois);
 
@@ -29,12 +32,13 @@ class StatistiqueController extends AbstractController
             $totalMinutes += $fraisItem->getHeuresTotales();
         }
 
-        // Convertir les minutes en heures
-        $totalHeures = $totalMinutes / 60;
+        // Convertir les minutes en heures et minutes
+        $totalHeures = floor($totalMinutes / 60);
+        $totalMinutes = $totalMinutes % 60;
 
         return $this->render('statistiques/index.html.twig', [
             'totalFrais' => $totalFrais,
-            'totalHeures' => $totalHeures,
+            'totalHeures' => sprintf('%dh %02dmin', $totalHeures, $totalMinutes),
         ]);
     }
 }
