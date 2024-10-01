@@ -19,14 +19,28 @@ class HistoriqueController extends AbstractController
         // Récupérer tous les mois distincts
         $months = $fraisRepository->findDistinctMonths();
 
-        // Récupérer le mois sélectionné
-        $selectedMonth = $request->query->get('month', date('Y-m'));
+        // Récupérer le mois actuel
+        $currentMonth = date('Y-m');
+
+        // Récupérer le mois sélectionné (ou le mois actuel par défaut)
+        $selectedMonth = $request->query->get('month', $currentMonth);
 
         // Extraire année et mois
         list($year, $month) = explode('-', $selectedMonth);
 
         // Récupérer les frais pour le mois sélectionné
         $fraisList = $fraisRepository->findByMonth((int)$year, (int)$month);
+
+        // Si le mois sélectionné n'a pas de données, prendre le dernier mois enregistré
+        if (empty($fraisList) && !empty($months)) {
+            // Récupérer le dernier mois enregistré
+            $lastMonth = end($months)['month']; // Assurez-vous que 'month' est la clé correcte
+            list($year, $month) = explode('-', $lastMonth);
+            $selectedMonth = $lastMonth;
+
+            // Récupérer les frais pour le dernier mois enregistré
+            $fraisList = $fraisRepository->findByMonth((int)$year, (int)$month);
+        }
 
         // Convertir les temps en heures et minutes
         foreach ($fraisList as &$frais) {
@@ -40,6 +54,7 @@ class HistoriqueController extends AbstractController
             'fraisList' => $fraisList,
         ]);
     }
+
 
 
     #[Route('/historique/{id}', name: 'historique_detail')]
