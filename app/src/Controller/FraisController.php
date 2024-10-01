@@ -16,6 +16,8 @@ class FraisController extends AbstractController
     public function ajouter(Request $request, EntityManagerInterface $entityManager): Response
     {
         $frais = new Frais();
+        $frais->setDate(new \DateTime()); // Initialise la date à aujourd'hui
+
         $form = $this->createForm(FraisType::class, $frais);
 
         $form->handleRequest($request);
